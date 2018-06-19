@@ -12,7 +12,7 @@
 class GeeMonitor
 {
     Vec3D backward;
-    mutable RingBuffer<Vec3D, AVERAGES_WINDOW_SIZE> averages;
+    RingBuffer<Vec3D, AVERAGES_WINDOW_SIZE> averages;
     float threshold_gees; // in m/s^2
 
     Vec3D get_average() const;
