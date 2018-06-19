@@ -85,13 +85,13 @@ Vec3D Vec3D::normalized() const
 }
 
 // Compound Addition Assignment
-Vec3D& operator+=(Vec3D& self, Vec3D& other)
+Vec3D& operator+=(Vec3D& self, const Vec3D& other)
 {
     return self = self + other;
 }
 
 // Compound Subtraction Assignment
-Vec3D& operator-=(Vec3D& self, Vec3D& other)
+Vec3D& operator-=(Vec3D& self, const Vec3D& other)
 {
     return self = self - other;
 }
