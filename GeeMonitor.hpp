@@ -26,7 +26,7 @@ public:
 
 Vec3D GeeMonitor::get_average() const
 {
-    if (averages.size() == 0) return zero_vector();
+    if (averages.is_empty()) return zero_vector();
     Vec3D total = zero_vector();
     for (auto& acc : averages)
         total += acc;
