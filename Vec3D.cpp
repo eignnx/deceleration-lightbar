@@ -1,28 +1,14 @@
-#ifndef VEC3D_H
-#define VEC3D_H
+#include "Vec3D.hpp"
 
-#ifndef sqrt
-#define sqrt(x) x
-#endif
 
-#ifndef sq
-#define sq(x) x
-#endif
+//////////////// Constructors ////////////////
 
-struct Vec3D
-{
-    float x, y, z;
-
-    Vec3D();
-    Vec3D(float x, float y, float z);
-
-    float norm() const;
-    Vec3D normalized() const;
-};
-
-// Constructors
 Vec3D::Vec3D() : x(0.0), y(0.0), z(0.0) {}
+
 Vec3D::Vec3D(float x, float y, float z) : x(x), y(y), z(z) {}
+
+
+//////////////// Member Functions ////////////////
 
 // Returns the magnitude (euclidean distance, 2-norm) of the vector.
 float Vec3D::norm() const
@@ -30,8 +16,15 @@ float Vec3D::norm() const
     return sqrt(sq(x) + sq(y) + sq(z));
 }
 
+// Returns a normalized (unit length) vector pointing in the
+// same direction as the original.
+Vec3D Vec3D::normalized() const
+{
+    return *this / norm();
+}
 
-//-- Operators --//
+
+//////////////// Operators ////////////////
 
 // Vector Addition
 Vec3D operator+(const Vec3D& u, const Vec3D& v)
@@ -77,13 +70,6 @@ Vec3D operator-(const Vec3D& u, const Vec3D& v)
     return u + (-v);
 }
 
-// Returns a normalized (unit length) vector pointing in the
-// same direction as the original.
-Vec3D Vec3D::normalized() const
-{
-    return *this / norm();
-}
-
 // Compound Addition Assignment
 Vec3D& operator+=(Vec3D& self, const Vec3D& other)
 {
@@ -109,11 +95,12 @@ Vec3D& operator/=(Vec3D& self, float a)
 }
 
 
-// Definitions of Standard Basis Vectors
+//////////////// Special Vectors ////////////////
+
+// Definitions of standard basis vectors
 Vec3D i_hat() { return Vec3D(1, 0, 0); }
 Vec3D j_hat() { return Vec3D(0, 1, 0); }
 Vec3D k_hat() { return Vec3D(0, 0, 1); }
 
+// Define the zero function
 Vec3D zero_vector() { return Vec3D(); }
-
-#endif // VEC3D_H
