@@ -3,7 +3,6 @@
 
 #include "RingBuffer.hpp"
 #include "Vec3D.h"
-#include <utility>
 
 // The number of vectors to keep for averaging the
 // acceleration.
