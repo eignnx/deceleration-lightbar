@@ -1,7 +1,7 @@
 #ifndef RINGBUFFER_HPP
 #define RINGBUFFER_HPP
 
-#include <stdlib.h>
+#include <stdlib.h> // size_t
 
 template <typename T, size_t N>
 class RingBuffer
@@ -17,25 +17,25 @@ public:
     size_t size() const;
     bool is_empty() const;
     bool is_full() const;
-    void push(T&& x);
+    // void push(T&& x);
     void push(T x);
 
     class Iterator
     {
         size_t start, size, current;
-        T* buffer;
+        const T* buffer;
 
     public:
-        Iterator(size_t start, size_t size, size_t current, T* buffer);
-        T& operator*(); // Dereference
-        T& operator++(); // Prefix
+        Iterator(size_t start, size_t size, size_t current, const T* buffer);
+        const T& operator*(); // Dereference
+        const T& operator++(); // Prefix
         T operator++(int); // Postfix
-        bool operator==(Iterator& other) const;
-        bool operator!=(Iterator& other) const { return !(*this == other); }
+        bool operator==(const Iterator& other) const;
+        bool operator!=(const Iterator& other) const { return !(*this == other); }
     };
 
-    RingBuffer::Iterator begin();
-    RingBuffer::Iterator end();
+    RingBuffer::Iterator begin() const;
+    RingBuffer::Iterator end() const;
 };
 
 template <typename T, size_t N>
@@ -62,13 +62,13 @@ bool RingBuffer<T, N>::is_empty() const { return size() == 0; }
 template <typename T, size_t N>
 bool RingBuffer<T, N>::is_full() const { return size() == N; }
 
-template <typename T, size_t N>
-void RingBuffer<T, N>::push(T&& x)
-{
-    first_opening() = x;
-    if (sz < N) sz++;
-    else start++;
-}
+// template <typename T, size_t N>
+// void RingBuffer<T, N>::push(T&& x)
+// {
+//     first_opening() = x;
+//     if (sz < N) sz++;
+//     else start++;
+// }
 
 template <typename T, size_t N>
 void RingBuffer<T, N>::push(T x)
@@ -79,25 +79,25 @@ void RingBuffer<T, N>::push(T x)
 }
 
 template <typename T, size_t N>
-RingBuffer<T, N>::Iterator::Iterator(size_t start, size_t size, size_t current, T* buffer)
+RingBuffer<T, N>::Iterator::Iterator(size_t start, size_t size, size_t current, const T* buffer)
     : start(start), size(size), current(current), buffer(buffer) {}
 
 template <typename T, size_t N>
-typename RingBuffer<T, N>::Iterator RingBuffer<T, N>::begin()
+typename RingBuffer<T, N>::Iterator RingBuffer<T, N>::begin() const
 {
     RingBuffer<T, N>::Iterator it(start, size(), 0, buffer);
     return it;
 }
 
 template <typename T, size_t N>
-typename RingBuffer<T, N>::Iterator RingBuffer<T, N>::end()
+typename RingBuffer<T, N>::Iterator RingBuffer<T, N>::end() const
 {
     RingBuffer<T, N>::Iterator it(start, size(), size(), buffer);
     return it;
 }
 
 template <typename T, size_t N>
-T& RingBuffer<T, N>::Iterator::operator*()
+const T& RingBuffer<T, N>::Iterator::operator*()
 {
     return buffer[(start + current) % N];
 }
@@ -105,7 +105,7 @@ T& RingBuffer<T, N>::Iterator::operator*()
 template <typename T, size_t N>
 const T& RingBuffer<T, N>::Iterator::operator++()
 {
-    T& ref = buffer[(start + current) % N];
+    const T& ref = buffer[(start + current) % N];
     current++;
     return ref;
 }
